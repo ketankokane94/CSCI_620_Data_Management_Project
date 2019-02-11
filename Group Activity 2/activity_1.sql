@@ -1,0 +1,132 @@
+
+
+
+drop table certified
+
+
+
+select * from certified
+use airline;
+SELECT * FROM EMP;
+SELECT * FROM AIRCRAFT;
+SELECT * FROM CERT;
+
+
+SELECT A.AID, avg(E.SALARY)
+FROM AIRCRAFT A 
+INNER JOIN CERT C ON C.AID = A.AID
+INNER JOIN EMP E ON E.EID = C.EID
+GROUP BY A.AID
+WHERE E.SALARY > 90
+10:41:29	SELECT A.AID, E.SALARY FROM AIRCRAFT A  INNER JOIN CERT C ON C.AID = A.AID INNER JOIN EMP E ON E.EID = C.EID GROUP BY A.AID LIMIT 0, 1000	Error Code: 1055. Expression #2 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'airline.E.SALARY' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by	0.00042 sec
+
+
+SELECT A.AID,A.ANAME, E.ENAME, E.SALARY 
+FROM AIRCRAFT A, CERT C, EMP E 
+WHERE C.AID = A.AID AND E.EID = C.EID AND 
+90 < ALL ( SELECT EM.SALARY FROM EMP EM WHERE EM.EID = E.EID)
+
+
+INSERT INTO `AIRLINE`.`CERT`
+(`AID`,
+`EID`)
+VALUES
+('1001',
+'0000');
+
+INSERT INTO `AIRLINE`.`CERT`
+(`AID`,
+`EID`)
+VALUES
+('1001',
+'0001');
+INSERT INTO `AIRLINE`.`CERT`
+(`AID`,
+`EID`)
+VALUES
+('1002',
+'0002');
+INSERT INTO `AIRLINE`.`CERT`
+(`AID`,
+`EID`)
+VALUES
+('1002',
+'0003');
+
+INSERT INTO `AIRLINE`.`CERT`
+(`AID`,
+`EID`)
+VALUES
+('1002',
+'0001');
+
+
+INSERT INTO `AIRLINE`.`AIRCRAFT`
+(`AID`,
+`ANAME`,
+`RANGE_`)
+VALUES
+('1001',
+'AIR INDIA',
+9000);
+
+INSERT INTO `AIRLINE`.`AIRCRAFT`
+(`AID`,
+`ANAME`,
+`RANGE_`)
+VALUES
+('1002',
+'AIR INDIA',
+9000);
+INSERT INTO `AIRLINE`.`AIRCRAFT`
+(`AID`,
+`ANAME`,
+`RANGE_`)
+VALUES
+('1003',
+'AIR INDIA',
+9000);
+
+
+
+
+
+
+
+
+
+
+INSERT INTO `AIRLINE`.`EMP`
+(`EID`,
+`ENAME`,
+`SALARY`)
+VALUES
+('0000',
+'KETAN',
+'100');
+
+INSERT INTO `AIRLINE`.`EMP`
+(`EID`,
+`ENAME`,
+`SALARY`)
+VALUES
+('0001',
+'KAVYA',
+'200');
+
+INSERT INTO `AIRLINE`.`EMP`
+(`EID`,
+`ENAME`,
+`SALARY`)
+VALUES
+('0003',
+'AM',
+'10');
+INSERT INTO `AIRLINE`.`EMP`
+(`EID`,
+`ENAME`,
+`SALARY`)
+VALUES
+('0004',
+'SID',
+'100');
