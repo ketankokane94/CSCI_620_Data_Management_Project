@@ -1,0 +1,422 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wenneker Assignment
+% LaTeX Template
+% Version 2.0 (12/1/2019)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@LaTeXTemplates.com)
+% Frits Wenneker
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt]{scrartcl} % Font size
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{	
+	\normalfont\normalsize
+	\textsc{CSCI 620: Introduction to Big Data}\\ % Your university, school and/or department name(s)
+	\vspace{5pt} % Whitespace
+	\rule{\linewidth}{0.5pt}\\ % Thin top horizontal rule
+	\vspace{20pt} % Whitespace
+	{\huge Activity 2 : SQL}\\ % The assignment title
+	\vspace{12pt} % Whitespace
+	\rule{\linewidth}{2pt}\\ % Thick bottom horizontal rule
+	\vspace{12pt} % Whitespace
+}
+
+\author{\LARGE Ameya Nagnur (an4920)\\ \LARGE Siddarth Sargunaraj (sxs2469)\\ \LARGE Ketan Kokane (kk7471)\\ \LARGE Kavya Kotian (kk2014)} % Your name
+
+
+\date{\normalsize\today} % Today's date (\today) or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	FIGURE EXAMPLE
+%----------------------------------------------------------------------------------------
+
+\section{Find the names of aircraft such that all pilots certified to operate them have salaries more than \$80,000 }
+
+\subsection{Query}
+Select distinct A.aname\\
+from Aircraft A, Certified C, Employees E \\
+where E.eid = C.eid and A.aid = C.aid and E.salary > 80000 and \\\hspace*{10mm}A.aid NOT in
+(Select A.aid\\
+\hspace*{10mm}from Aircraft A, Certified C, Employees E \\
+\hspace*{10mm}where E.eid = C.eid and A.aid = C.aid and E.salary <= 80000 );
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{aname} \\
+\hline
+Jet Airways \\
+\hline
+
+\end{tabular}
+\end{left}
+%-------------------------------------------------------------------
+
+\section{For each pilot who is certified for more than three aircraft, find the eid and the maximum cruisingrange  of the aircraft for which she or he is certified }
+
+\subsection{Query}
+Select E1.eid, max(A.cruisingrange) \\
+from Aircraft A, Certified C1, Employees E1\\ 
+where E1.eid = C1.eid and C1.aid = A.aid and \\
+\hspace*{10mm}E1.eid in (Select distinct E2.eid \\
+\hspace*{10mm}from Certified C2, Employees E2\\ 
+\hspace*{10mm}where E2.eid = C2.eid\\ 
+\hspace*{10mm}group by E2.eid\\ 
+\hspace*{10mm}having count(C2.aid) > 3) \\
+\hspace*{10mm}group by E1.eid;
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ |c| c| }
+\hline
+\textbf{eid} & \textbf{max(A.cruisingrange)} \\
+\hline
+127 &	7410 \\
+131 &	8001 \\
+135	& 7782 \\
+141	& 4136 \\
+149	& 7393 \\
+\hline
+
+\end{tabular}
+\end{left}
+%----------------------------------------------------------------------------------------
+
+
+
+%------------------------------------------------
+
+
+\section{Find the names of pilots whose salary is less than the price of the cheapest route from Los Angeles to Honolulu. }
+\subsection{Query}
+Select distinct E.ename \\
+from Employees E \\
+where E.salary < (Select min(F.price) \\
+\hspace*{10mm}from Flights F where F.from\_ = 'Los Angeles' and F.to\_ = 'Honolulu'\\
+\hspace*{10mm} group by F.from\_);
+
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{ename} \\
+\hline
+Ami Titterington\\
+Ertha Dranfield\\
+Neile Cashin\\
+Val Bromont\\
+Biddie Rattrie\\
+
+\hline
+
+\end{tabular}
+\end{left}
+
+
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+
+
+
+\section{For all aircraft with cruisingrange over 1000 miles, find the name of the aircraft and the average salary of all pilots certified for this aircraft.}
+
+\subsection{Query}
+select a.aname as 'aircraft name',avg( e.salary) as ' average pilot salary' \\
+from aircraft a \\
+inner join certified c on c.aid = a.aid\\
+inner join employees e on e.eid = c.eid\\
+where a.cruisingrange > 1000\\
+group by a.aname;
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | c | }
+\hline
+\textbf{aircraft name} & \textbf{average pilot salary}\\
+\hline
+ Boeing & 94119.4536  \\ 
+ Jet Airways & 99331.3839  \\  
+ Air India & 97412.0286 \\  
+Air China &	99601.1400\\
+Emirates &	101026.4521\\
+\hline
+
+\end{tabular}
+\end{left}
+
+%----------------------------------------------------------------------------------------
+
+
+%------------------------------------------------
+
+
+\section{Find the names of pilots certified for some Boeing aircraft }
+
+\subsection{Query}
+select distinct e.ename\\
+from employees e \\
+inner join certified c on c.eid = e.eid\\
+inner join aircraft a on c.aid = a.aid and a.aname = 'Boeing';
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{ename} \\
+\hline
+Winifred Cremen\\
+Colleen Hassent\\
+Dorelia Elliman\\
+Win Sabie\\
+Alonso Aishford\\
+
+\hline
+
+\end{tabular}
+\end{left}
+
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+
+
+\section{Find the aid s of all aircraft that can be used on routes from Los Angeles to Chicago }
+
+\subsection{Query}
+select  *\\
+from aircraft a\\
+inner join certified c on c.aid = a.aid\\
+where a.cruisingrange >= (select distance from flights \\
+\hspace*{30pt}where from\_ = 'Detroit' and to\_ = 'Baliuag');
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ |c| c| c|c|c| }
+\hline
+\textbf{aid} & \textbf{aname} & \textbf{cruisingrange}& \textbf{aid}& \textbf{eid}\\
+\hline
+69 & Boeing & 9068 & 69 &	791\\
+84&	Air China&	9474&	84&	747\\
+12&	Jet Airways&	9666&	12&	952\\
+20&	Jet Blue&	9110&	20&	525\\
+84&	Air China&	9474&	84&	876\\
+\hline
+
+\end{tabular}
+\end{left}
+
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+
+
+\section{Print the enames of pilots who can operate planes with cruisingrange  greater than 3000 miles but are not certified on any Boeing aircraft. }
+
+\subsection{Query}
+select distinct(E.ename)\\
+from employees as E, certified as C, aircraft as A\\
+where E.eid = C.eid and C.aid = A.aid and\\
+\hspace*{10mm} 	A.aid in (select aid \\
+\hspace*{10mm}from aircraft \\
+\hspace*{10mm}where cruisingrange > 3000 and not aname = 'Boeing');
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{ename} \\
+\hline
+Winifred Cremen\\
+Arlette Grimmolby\\
+Carie Syseland\\
+Bary Coulthart\\
+Allyce Muirden \\
+
+
+\hline
+
+\end{tabular}
+\end{left}
+
+%----------------------------------------------------------------------------------------
+
+
+%------------------------------------------------
+
+
+\section{Compute the difference between the average salary of a pilot and the average salary of all employees (including pilots).}
+
+\subsection{Query}
+select ABS(AVG(P.salary) - AVG(E.salary))\\
+from employees as P, employees as E, certified as C\\
+where P.eid = C.eid ;
+
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{ABS(AVG(P.salary) - AVG(E.salary))} \\
+\hline
+1293.8750 \\
+\hline
+
+\end{tabular}
+\end{left}
+
+%----------------------------------------------------------------------------------------
+
+%------------------------------------------------
+
+
+\section{Print the name and salary of every nonpilot whose salary is more than the averagesalary for pilots }
+
+\subsection{Query}
+select distinct(E.ename), E.salary\\
+from employees as E, certified as C\\
+where not E.eid = C.eid \\
+\hspace*{10mm}and E.salary > (select AVG(salary) \\
+\hspace*{10mm}from employees as P, certified as C \\
+\hspace*{10mm}where P.eid = C.eid );
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ |c| c| }
+\hline
+\textbf{ename} & \textbf{salary}\\
+\hline
+Robbi Bellward &	103415 \\
+Arlette Grimmolby &	137469 \\
+Bary Coulthart &	148716 \\
+Janeen MacGibbon &	109640 \\
+Allyce Muirden &	142358 \\
+\hline
+\end{tabular}
+\end{left}
+
+%----------------------------------------------------------------------------------------
+
+
+%------------------------------------------------
+
+
+\section{Print the names of employees who are certified only on aircrafts with cruising range longer than 1000 miles. }
+
+\subsection{Query}
+select distinct E.ename\\
+from employees as E, certified as C, aircraft as A\\
+  where E.eid = C.eid and
+        C.aid = A.aid and
+        A.cruisingrange > 1000;
+
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{ename} \\
+\hline
+Winifred Cremen\\
+Arlette Grimmolby\\
+Carie Syseland\\
+Bary Coulthart\\
+Allyce Muirden\\
+\hline
+\end{tabular}
+\end{left}
+%----------------------------------------------------------------------------------------
+
+
+%------------------------------------------------
+
+
+\section{Print the names of employees who are certified only on aircrafts with cruisingrange longer than 1000 miles, but on at least two such aircrafts }
+
+\subsection{Query}
+SELECT DISTINCT E.ename\\
+  FROM Employees as E, Certified as C, Aircraft as A\\
+  WHERE E.eid = C.eid and
+        C.aid = A.aid and
+        A.cruisingrange > 1000 and\\
+ \hspace*{13mm}      C.eid in
+        (SELECT COUNT(C.eid)\\
+     \hspace*{13mm}      FROM Aircraft as A, Certified as C\\
+       \hspace*{13mm}    WHERE A.cruisingrange > 1000\\
+       \hspace*{13mm}    GROUP BY C.eid\\
+       \hspace*{13mm}    HAVING COUNT(C.eid) > 1
+         );
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{ename} \\
+\hline
+Pryce Loverock\\
+Maisey Rosenschein\\
+Brucie McCurley\\
+Johnathon Shropsheir\\
+Gonzales Records\\
+
+\hline
+\end{tabular}
+\end{left}
+%----------------------------------------------------------------------------------------
+
+
+%------------------------------------------------
+
+
+\section{Print the names of employees who are certified only on aircrafts with cruisingrange longer than 1000 miles and who are certified on some Boeing aircraft }
+
+\subsection{Query}
+SELECT DISTINCT E.ename\\
+  FROM Employees as E, Certified as C, Aircraft as A\\
+  WHERE E.eid = C.eid AND
+        C.aid = A.aid AND
+        A.cruisingrange > 1000 AND
+        A.aname = 'Boeing';
+\subsection{Output}
+\begin{left}
+\begin{tabular}{ | c | }
+\hline
+\textbf{ename} \\
+\hline
+Winifred Cremen\\
+Colleen Hassent\\
+Dorelia Elliman\\
+Win Sabie\\
+Alonso Aishford\\
+
+\hline
+\end{tabular}
+\end{left}
+%----------------------------------------------------------------------------------------
+
+
+
+%------------------------------------------------
+\end{document}
