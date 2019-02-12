@@ -1,5 +1,23 @@
+#1
+(Select distinct A.aname, C.eid 
+from Aircraft A, Certified C, Employees E 
+where E.eid = C.eid and A.aid = C.aid and E.salary > 80000) 
+Except 
+(Select A.aname, C.eid 
+from Aircraft A, Certified C, Employees E 
+where E.eid = C.eid and A.aid = C.aid and E.salary <= 80000);
 
+#2
+Select E1.eid, max(A.cruisingrange) 
+from Aircraft A, Certified C1, Employees E1 
+where E1.eid = C1.eid and C1.aid = A.aid and 
+E1.eid in (Select distinct E2.eid from Certified C2, Employees E2 where E2.eid = C2.eid group by E2.eid having count(C2.aid) > 3) 
+group by E1.eid;
 
+#3
+Select distinct E.ename 
+from Employees E 
+where E.salary < (Select min(F.price) from Flights F where F.from_ = 'Los Angeles' and F.to_ = 'Honolulu' group by F.from_);
 
 #4
 select a.aname as 'aircraft name',avg( e.salary) as ' average pilot salary' 

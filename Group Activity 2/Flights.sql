@@ -998,3 +998,6 @@ insert into Flights (flno, from_, to_, distance, departs, arrives, price) values
 insert into Flights (flno, from_, to_, distance, departs, arrives, price) values (998, 'Philadelphia', 'Xihongmen', 3546, '18:32', '19:01', 8684.31);
 insert into Flights (flno, from_, to_, distance, departs, arrives, price) values (999, 'Kitami', 'Qom', 2769, '2:07', '15:49', 1979.06);
 insert into Flights (flno, from_, to_, distance, departs, arrives, price) values (1000, 'Setúbal', 'Qing’an', 7564, '6:24', '16:56', 3999.51);
+insert into Flights (flno, from_, to_, distance, departs, arrives, price) values (1001, 'Los Angeles', 'Honolulu', 7584, '6:24', '16:56', 69999.51);
+insert into Flights (flno, from_, to_, distance, departs, arrives, price) values (1002, 'Los Angeles', 'Honolulu', 7569, '6:24', '16:56', 79999);
+insert into Flights (flno, from_, to_, distance, departs, arrives, price) values (1003, 'Los Angeles', 'Honolulu', 5564, '6:24', '16:56', 80000.51);
