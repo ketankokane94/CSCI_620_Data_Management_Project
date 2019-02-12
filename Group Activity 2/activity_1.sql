@@ -1,11 +1,10 @@
 #1
-(Select distinct A.aname, C.eid 
+Select distinct A.aname
 from Aircraft A, Certified C, Employees E 
-where E.eid = C.eid and A.aid = C.aid and E.salary > 80000) 
-Except 
-(Select A.aname, C.eid 
+where E.eid = C.eid and A.aid = C.aid and E.salary > 80000 and A.aid NOT in
+(Select A.aid
 from Aircraft A, Certified C, Employees E 
-where E.eid = C.eid and A.aid = C.aid and E.salary <= 80000);
+where E.eid = C.eid and A.aid = C.aid and E.salary <= 80000 );
 
 #2
 Select E1.eid, max(A.cruisingrange) 
