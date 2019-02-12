@@ -46,18 +46,18 @@ SELECT DISTINCT E.ename
   FROM Employees as E, Certified as C, Aircraft as A
   WHERE E.eid = C.eid and
         C.aid = A.aid and
-        A.cruisingrange > 10000;
+        A.cruisingrange > 1000;
 			       
 #11
 SELECT DISTINCT E.ename
   FROM Employees as E, Certified as C, Aircraft as A
   WHERE E.eid = C.eid and
         C.aid = A.aid and
-        A.cruisingrange > 10000 and
+        A.cruisingrange > 1000 and
         C.eid in
         (SELECT COUNT(C.eid)
           FROM Aircraft as A, Certified as C
-          WHERE A.cruisingrange > 10000
+          WHERE A.cruisingrange > 1000
           GROUP BY C.eid
           HAVING COUNT(C.eid) > 1
          );
@@ -67,7 +67,7 @@ SELECT DISTINCT E.ename
   FROM Employees as E, Certified as C, Aircraft as A
   WHERE E.eid = C.eid AND
         C.aid = A.aid AND
-        A.cruisingrange > 10000 AND
+        A.cruisingrange > 1000 AND
         A.aname = 'Boeing';
 
 			       
