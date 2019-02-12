@@ -41,3 +41,34 @@ select distinct(E.ename), E.salary
 from employees as E, certified as C
 where not E.eid = C.eid and E.salary > (select AVG(salary) from employees as P, certified as C where P.eid = C.eid );
 
+#10
+SELECT DISTINCT E.ename
+  FROM Employees as E, Certified as C, Aircraft as A
+  WHERE E.eid = C.eid and
+        C.aid = A.aid and
+        A.cruisingrange > 10000;
+			       
+#11
+SELECT DISTINCT E.ename
+  FROM Employees as E, Certified as C, Aircraft as A
+  WHERE E.eid = C.eid and
+        C.aid = A.aid and
+        A.cruisingrange > 10000 and
+        C.eid in
+        (SELECT COUNT(C.eid)
+          FROM Aircraft as A, Certified as C
+          WHERE A.cruisingrange > 10000
+          GROUP BY C.eid
+          HAVING COUNT(C.eid) > 1
+         );
+			       
+#12
+SELECT DISTINCT E.ename
+  FROM Employees as E, Certified as C, Aircraft as A
+  WHERE E.eid = C.eid AND
+        C.aid = A.aid AND
+        A.cruisingrange > 10000 AND
+        A.aname = 'Boeing';
+
+			       
+			  
