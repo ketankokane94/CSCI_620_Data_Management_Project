@@ -34,7 +34,7 @@ where E.eid = C.eid and C.aid = A.aid and
 #8
 select ABS(AVG(P.salary) - AVG(E.salary))
 from employees as P, employees as E, certified as C
-where P.eid = C.eid and not E.eid = C.eid;
+where P.eid = C.eid ;
 
 #9
 select distinct(E.ename), E.salary
