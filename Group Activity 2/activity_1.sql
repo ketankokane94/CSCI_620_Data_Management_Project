@@ -25,5 +25,19 @@ where a.cruisingrange >= (select distance from flights where from_ = 'Detroit' a
 # changed the location from log angeles to Detroit and chicago to Baliuag
 
 
+#7
+select distinct(E.ename)
+from employees as E, certified as C, aircraft as A
+where E.eid = C.eid and C.aid = A.aid and
+	A.aid in (select aid from aircraft where cruisingrange > 3000 and not aname = 'Boeing');
 
+#8
+select ABS(AVG(P.salary) - AVG(E.salary))
+from employees as P, employees as E, certified as C
+where P.eid = C.eid and not E.eid = C.eid;
+
+#9
+select distinct(E.ename), E.salary
+from employees as E, certified as C
+where not E.eid = C.eid and E.salary > (select AVG(salary) from employees as P, certified as C where P.eid = C.eid );
 
