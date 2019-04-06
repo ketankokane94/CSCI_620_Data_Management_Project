@@ -1,0 +1,114 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Wenneker Assignment
+% LaTeX Template
+% Version 2.0 (12/1/2019)
+%
+% This template originates from:
+% http://www.LaTeXTemplates.com
+%
+% Authors:
+% Vel (vel@LaTeXTemplates.com)
+% Frits Wenneker
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[11pt]{scrartcl} % Font size
+
+\input{structure.tex} % Include the file specifying the document structure and custom commands
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\title{	
+	\normalfont\normalsize
+	\textsc{CSCI 620: Introduction to Big Data}\\ % Your university, school and/or department name(s)
+	\vspace{5pt} % Whitespace
+	\rule{\linewidth}{0.5pt}\\ % Thin top horizontal rule
+	\vspace{20pt} % Whitespace
+	{\huge Activity 5 : Data Classification}\\ % The assignment title
+	\vspace{12pt} % Whitespace
+	\rule{\linewidth}{2pt}\\ % Thick bottom horizontal rule
+	\vspace{12pt} % Whitespace
+}
+
+\author{\LARGE Ameya Nagnur (an4920)\\ \LARGE Siddarth Sargunaraj (sxs2469)\\ \LARGE Ketan Kokane (kk7471)\\ \LARGE Kavya Kotian (kk2014)} % Your name
+
+
+\date{\normalsize\today} % Today's date (\today) or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	FIGURE EXAMPLE
+%----------------------------------------------------------------------------------------
+\section{}
+% \begin{left}
+    
+% \begin{tabular}{ | c | c  c  c | c | }
+% \hline
+% \textbf{Instance} & \textbf{$a_1$} & \textbf{$a_2$} & \textbf{$a_3$} & \textbf{Target Class} \\
+% \hline
+% 1.0 & a & s & s & g\\
+% \hline
+% 3.0 & a & s & s & g\\
+% \hline
+% 4.0 & a & s & s & g\\
+% \hline
+% 5.0 & a & s & s & g\\
+% 5.0 & a & s & s & g\\
+% \hline
+% 6.0 & a & s & s & g\\
+% \hline
+% 7.0 & a & s & s & g\\
+% 7.0 & a & s & s & g\\
+% \hline
+% 8.0 & a & s & s & g\\
+% \hline
+
+\end{tabular}
+\end{left}
+\subsection{What is the entropy of this collection of training examples with respect to the positive class}
+
+\subsection{What are the information gains of splitting on a1 and splitting on a2 relative to these training examples?}
+\subsection{For a3, which is a continuous attribute, compute the information gainfor every possible split}
+\begin{left}
+\begin{tabular}{ | c | c | c | c | c | }
+\hline
+\textbf{$a_3$} & \textbf{Split Point} & \textbf{Class Labels} & \textbf{Entropy} & \textbf{IG} \\
+\hline
+1.0 & a & s & s & g\\
+\hline
+3.0 & a & s & s & g\\
+\hline
+4.0 & a & s & s & g\\
+\hline
+5.0 & a & s & s & g\\
+5.0 & a & s & s & g\\
+\hline
+6.0 & a & s & s & g\\
+\hline
+7.0 & a & s & s & g\\
+7.0 & a & s & s & g\\
+\hline
+8.0 & a & s & s & g\\
+\hline
+
+
+\end{tabular}
+\end{left}
+%-------------------------------------------------------------------
+\subsection{What is the best split (among a1, a2, and a3) according to the information gain?}
+\subsection{What is the best split (between a1 and a2) according to the classification error rate}
+
+%------------------------------------------------
+\end{document}
