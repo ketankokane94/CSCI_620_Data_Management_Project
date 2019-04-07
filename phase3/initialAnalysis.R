@@ -13,7 +13,9 @@ data = read.table("Documents/GitHub/CSCI_620_Data_Management_Project/phase3/adul
 colnames(data)
 str(data)
 summary(data)
-
+#correlation plot
+adultDataset[] <- lapply(adultDataset,as.integer)
+corrplot(cor(adultDataset), method="number", type = "lower")
 # plotting histogram 
 plot(data$age)
 plot(data$workclass)
