@@ -52,7 +52,7 @@ counts[which.min(counts)]
 hist(age,main="Histogram for Age",xlab="Age", xlim=c(17,90),las=1, 
      breaks=20)
 
-# Display histogram of feature "workclass". Majority of the dataset 
+# Display pie chart of feature "workclass". Majority of the dataset 
 # are employed in the private sector
 pie(table(workclass))
 
@@ -65,7 +65,7 @@ hist(fnlwgt, main = "Final weight Histogram", xlab = "Final weights")
 # this attribute.
 
 #
-# Display histogram of feature "education"
+# Display table of feature "education"
 educationTable <-data.frame(count=sort(table(education), decreasing=TRUE))
 educationTable
 #We have a hypothesis that the higher the education, the higher the income. We would emphasise this using correlation in the later stages
@@ -74,7 +74,7 @@ dim(under20yearsAge)
 table(under20yearsAge$education)
 #demonstrates the education qualification frequency of people under the age of 20
 
-# Display histogram of feature "education.num"
+# Display table of feature "education.num"
 summary(education.num)
 table(education.num)
 
@@ -83,18 +83,18 @@ dim(educationTable)
 # Number of distinct values for education attribute is 16. There seems to be some correlation between the two values
 # education.num seems to be certain measure of the education attribute
 
-# Display histogram of feature "marital.status". Majority of our dataset fall under the
+# Display pie chart of feature "marital.status". Majority of our dataset fall under the
 # Married-civ-spouse or the never married category
 pie(table(marital.status))
-# Display histogram of feature "occupation". "?" represent null values
+# Display feature "occupation". "?" represent null values
 occupationTable <-data.frame(count=sort(table(occupation), decreasing=TRUE))
 occupationTable
-# Display histogram of feature "relationship"
+# Display pie chart of feature "relationship"
 pie(table(relationship))
 
-# Display histogram of feature "race". More than 75% of the dataset are white people. This column would be dropped
+# Display pie chart of feature "race". More than 75% of the dataset are white people. This column would be dropped
 pie(table(race))
-# Display histogram of feature "sex". Almost 3/4th of the dataset are male
+# Display plot of feature "sex". Almost 3/4th of the dataset are male
 pie(table(sex))
 husbandData <- dataset[ which(sex == " Female" & relationship==" Husband"), ]
 dim(husbandData)
@@ -109,12 +109,11 @@ hist(capital.loss)
 # appropriate
 hist(hours.per.week)
 
-# Display histogram of feature "native.country". The dataset consists of values from people in the
+# Display plot of feature "native.country". The dataset consists of values from people in the
 #United States. Thus this column would be dropped
 plot(table(native.country))
 countries<-table(native.country)
 countries[which.max(countries)]
 
-# Display histogram of feature "prediction"
+# Display plot of feature "prediction"
 plot(prediction)
-# Display the lower correlation plot of the dataset
