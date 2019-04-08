@@ -24,37 +24,60 @@ library(corrplot)
 #
 
 # Read the data into a data frame
-adultDataset = read.table("adult.data", header= TRUE, sep = ",")
+dataset = read.table("adult.data", header= TRUE, sep = ",")
+# Print the feature names
+colnames(dataset)
+# Dimensions of the raw data
+dim(dataset)
+
 # Convert the dataset to integer format
-adultDataset[] <- lapply(adultDataset,as.integer)
+#dataset[] <- lapply(dataset,as integer)
+
 # Removing null values
-na.omit(adultDataset)
+na.omit(dataset)
+#Checking dimensions after getting rid of null values
+dim(dataset)
 # Attach the database to the R search path
-attach(adultDataset)
+attach(dataset)
 
 #
 # Printing details of the dataset
 #
 
 # Print the summary of the dataset
-summary(adultDataset)
+summary(dataset)
 # Display internal structure of dataset
-str(adultDataset)
-# Print the feature names
-colnames(adultDataset)
+str(dataset)
+
+
 
 #
 # Visualization
 #
+# Our dataset inclused people ranging from 17-90years of age.
+summary(age)
+boxplot(age)
 
-# Display the lower correlation plot of the dataset
-corrplot(cor(adultDataset), method="number", type = "lower")
-# Display histogram of feature "age" 
-hist(age)
-# Display histogram of feature "workclass"
-hist(workclass)
+# Display histogram of feature "age" . Our dataset is concentrated 
+# in the 28-38(first quartile~second quartile) year range i.e which is expected as that would  
+# categorize the working age group
+## Frequency table
+counts <- table(age)
+counts
+## The most frequent and least frequent values. 
+# Most frequently occuring value is of the 36year olds. 
+# Least frequent values for age 86 and 87.
+counts[which.max(counts)]
+counts[which.min(counts)]
+hist(age,main="Histogram for Age",xlab="Age", xlim=c(17,90),las=1, 
+     breaks=20)
+# Display histogram of feature "workclass". Majority of the dataset 
+# are employed in the private sector
+pie(table(workclass))
+
 # Display histogram of feature "fnlwgt"
-hist(fnlwgt)
+#hist(fnlwgt, main = "Final weight Histogram", xlab = "Final weights")
+pie(as.numeric(fnlwgt), main = "Final weight Histogram")
 # Display histogram of feature "education"
 hist(education)
 # Display histogram of feature "education.num"
@@ -79,4 +102,5 @@ hist(hours.per.week)
 hist(native.country)
 # Display histogram of feature "prediction"
 hist(prediction)
-
+# Display the lower correlation plot of the dataset
+corrplot(cor(dataset), method="number", type = "lower")
