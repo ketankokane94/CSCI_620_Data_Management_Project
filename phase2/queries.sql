@@ -1,7 +1,37 @@
-Select M.TitleName, G.Genre from movie M, Titlegenres G where M.TitleName = G.TitleName and G.Genre like 'Comedy';
+SELECT M.titlename, 
+       G.genre 
+FROM   movie M, 
+       titlegenres G 
+WHERE  M.titlename = G.titlename 
+       AND G.genre LIKE 'Comedy'; 
 
-Select B.S_TitleName, sum(R.NumVotes) from belongs B, Titleratings R, tvepisode E where B.E_TitleName = E.TitleName and E.TitleName = R.TitleName group by B.S_TitleName;
+SELECT B.s_titlename, 
+       Sum(R.numvotes) 
+FROM   belongs B, 
+       titleratings R, 
+       tvepisode E 
+WHERE  B.e_titlename = E.titlename 
+       AND E.titlename = R.titlename 
+GROUP  BY B.s_titlename; 
 
-Select A.alternate_title from titleAlternateName A, Title T where T.TitleName = A.TitleName and A.region = 'India';
+SELECT A.alternate_title 
+FROM   titlealternatename A, 
+       title T 
+WHERE  T.titlename = A.titlename 
+       AND A.region = 'India'; 
 
-Select R.TitleName, D.PersonName, R.AverageRatings from Titleratings R, director D, title_director TD where TD.TitleName = R.TitleName and D.PersonName = TD.PersonName and R.AverageRatings > all (Select TR.AverageRatings from Titleratings TR, director DR, title_director TDR where TR.TitleName = TDR.TitleName and DR.PersonName = TDR.PersonName and DR.PersonName = 'Aaron Kodz');
+SELECT R.titlename, 
+       D.personname, 
+       R.averageratings 
+FROM   titleratings R, 
+       director D, 
+       title_director TD 
+WHERE  TD.titlename = R.titlename 
+       AND D.personname = TD.personname 
+       AND R.averageratings > ALL (SELECT TR.averageratings 
+                                   FROM   titleratings TR, 
+                                          director DR, 
+                                          title_director TDR 
+                                   WHERE  TR.titlename = TDR.titlename 
+                                          AND DR.personname = TDR.personname 
+                                          AND DR.personname = 'Aaron Kodz'); 
