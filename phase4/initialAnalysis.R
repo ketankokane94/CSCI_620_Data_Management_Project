@@ -14,6 +14,10 @@
 
 # Read the data into a data frame
 dataset = read.table("adult.data", header= TRUE, sep = ",")
+
+#Checks the class of the dataset
+class(dataset)
+
 # Print the feature names
 colnames(dataset)
 # Dimensions of the raw data
