@@ -1,14 +1,16 @@
 #install.packages("naniar")
 library(naniar)
-#library(dplyr)
 
 # Read the data into a data frame
-dataset = read.table("adult.data",
-                     header = TRUE,
-                     sep = ",",
-                     na.strings = " ?")
-#attach(dataset)
+dataset = read.table("adult.data",header = TRUE,sep = ",",na.strings = " ?")
+dim(dataset)
+
+#Based on the initial analysis, the columns workclass,fnlwgt,race,sex,capital.gain,capital.loss,native.country 
+#are dropped. Values stored in this column are skewed and do not contribute to any useful information
+dataset = subset(dataset, select = -c(fnlwgt,race,native.country) )
+dim(dataset)
 summary(dataset)
+
 # total number of rows with NA value
 sum(is.na(dataset))
 
@@ -34,9 +36,6 @@ dataset$workclass <- factor(dataset$workclass)
 dataset$occupation <- as.character(dataset$occupation)
 dataset$occupation[is.na(dataset$occupation)] <- "x"
 dataset$occupation <- factor(dataset$occupation)
-
-d1 <- filter(dataset, is.na(native.country))
-summary(d1)
 
 # when the native.country is NA, the other attribute shows the same trend, assumed the value is missing 
 # because the particular individual was simply unaware of his/her native.country.
