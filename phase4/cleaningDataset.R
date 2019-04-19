@@ -12,3 +12,4 @@ summary(dataset)
 #dim(dataset)
 class(dataset)
 colnames(dataset)
+
