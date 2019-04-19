@@ -10,3 +10,5 @@ summary(dataset)
 
 #dataset <- na.omit(dataset)
 #dim(dataset)
+class(dataset)
+colnames(dataset)
