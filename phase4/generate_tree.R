@@ -18,15 +18,15 @@ dim(test_data)
 test_data = subset(test_data, select = -c(fnlwgt,race,native.country) )
 dim(test_data)
 
-val_predicted <- predict(dtree, dataset, type = "class")
-
-print(val_predicted)
-
 #length(dataset$prediction)
 
 #class(val_predicted)
 
 # Check accuracy for prediction on training data
+
+val_predicted <- predict(dtree, dataset, type = "class")
+
+print(val_predicted)
 
 confMatrix <- table(dataset$prediction, val_predicted)
 
@@ -37,6 +37,10 @@ accuracy <- sum(diag(confMatrix))/sum(confMatrix)
 print(accuracy)
 
 # Check accuracy for prediction on training data
+
+val_predicted <- predict(dtree, test_data, type = "class")
+
+print(val_predicted)
 
 confMatrix <- table(test_data$prediction, val_predicted)
 
