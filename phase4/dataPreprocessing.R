@@ -22,7 +22,7 @@ row = data.frame(row)
 print(row)
 
 # find only those instances where workclass is null
-d1 <- filter(dataset, is.na(workclass))
+d1 <- filter(dataset, is.na("workclass"))
 summary(d1)
 head(d1)
 # found out that whenever the value of workclass is missing then the value of occupation is also missing,
