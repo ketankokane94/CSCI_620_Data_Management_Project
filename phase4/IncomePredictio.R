@@ -80,4 +80,14 @@ dataset$occupation <- as.character(dataset$occupation)
 dataset$occupation[is.na(dataset$occupation)] <- "Unknown"
 dataset$occupation <- factor(dataset$occupation)
 
+names(dataset)
+# attribute importance based on correlation
+varset1<- c("relationship","capital.gain","education", "prediction")
+datasetFrame1<- subset(dataset, select = varset1)
+GKmatrix1<- GKtauDataframe(datasetFrame1)
+plot(GKmatrix1, corrColors = "blue")
+
+# tree creation
+library(rpart)
+library(rpart.plot)
 
