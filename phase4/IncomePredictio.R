@@ -44,15 +44,15 @@ datasetFrame1<- subset(dataset, select = varset1)
 GKmatrix1<- GKtauDataframe(datasetFrame1)
 plot(GKmatrix1, corrColors = "blue")
 
-
+#Redundant attributes "education.num" and capital loss are dropped
 dataset = subset(dataset, select = -c(education.num,capital.loss) )
 dim(dataset)
 
 
-#Skewed graph for Native.countries attribute
+#Skewed graph for Marital Status attribute
 ggplot(data.frame(dataset)) +
-  geom_bar(aes(x=marital.status,fill = as.factor(prediction)))+ ggtitle(label = "Prediction-maritalStatus Relationship ")+
-  labs(fill = "Prediction")  + xlab("Native Countries")+ylab("Count")+
+  geom_bar(aes(x=marital.status,fill = as.factor(prediction)))+ ggtitle(label = "Prediction-MaritalStatus Relationship ")+
+  labs(fill = "Prediction")  + xlab("Marital Status")+ylab("Count")+
   theme(axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
@@ -71,9 +71,10 @@ row = data.frame(row)
 print(row)
 
 # find only those instances where workclass is null
-d1 <- filter(dataset, is.na("workclass"))
-summary(d1)
-head(d1)
+#d1 <- filter(dataset, is.na("workclass"))
+#summary(d1)
+#head(d1)
+
 # found out that whenever the value of workclass is missing then the value of occupation is also missing,
 # this suggest some co-relation between them.
 
@@ -85,47 +86,67 @@ dataset$workclass <- factor(dataset$workclass)
 dataset$occupation <- as.character(dataset$occupation)
 dataset$occupation[is.na(dataset$occupation)] <- "Unknown"
 dataset$occupation <- factor(dataset$occupation)
-
+dim(dataset)
 names(dataset)
+#Our data after preprocessing consists of just 10 columns
 # attribute importance based on correlation
 varset1<- c("relationship","capital.gain","education", "prediction")
 datasetFrame1<- subset(dataset, select = varset1)
 GKmatrix1<- GKtauDataframe(datasetFrame1)
 plot(GKmatrix1, corrColors = "blue")
+#------------------------------------------------------------------------------------------------
+#Preparing Test data by applying the preprocessing steps applied to the training data above
+test_data = read.table("adult.test",header = TRUE,sep = ",",na.strings = " ?")
+dim(test_data)
+attach(test_data)
+#Dropping redundant columns
+test_data = subset(test_data, select = -c(fnlwgt,race,native.country,education.num,capital.loss) )
+dim(test_data)
 
-#Preparing Test data
+#Missing value analysis
+# total number of rows with NA value
+sum(is.na(test_data))
 
-# tree creation
+# find the number of null values for each attribute
+row = sapply(test_data,  function(x)
+  sum(is.na(x)))
 
+row = data.frame(row)
 
+# find only those instances where workclass is null
+#d1 <- filter(dataset, is.na("workclass"))
+#summary(d1)
+#head(d1)
+
+# found out that whenever the value of workclass is missing then the value of occupation is also missing,
+# this suggest some co-relation between them.
+
+#replace the NA of WORKCLASS WITH "Unknown".
+test_data$workclass <- as.character(test_data$workclass)
+test_data$workclass[is.na(test_data$workclass)] <- "Unknown"
+test_data$workclass <- factor(test_data$workclass)
+
+test_data$occupation <- as.character(test_data$occupation)
+test_data$occupation[is.na(test_data$occupation)] <- "Unknown"
+test_data$occupation <- factor(test_data$occupation)
+dim(test_data)
+names(test_data)
+
+#------------------------------------------------------------------------------------------------
+# Decision tree creation based on training dataset
 dtree <- rpart(prediction ~ ., data = dataset, method = 'class', model = TRUE)
 rpart.plot(dtree)
 
 val_predicted <- predict(dtree, dataset, type = "class")
 
-confMatrix <- as.data.frame(table(dataset$prediction, val_predicted))
-names(confMatrix)
+confMatrix <- (table(dataset$prediction, val_predicted))
 print(confMatrix)
-ggplot(data =  confMatrix, mapping = aes(x = Var1, y = val_predicted)) +
-  ggtitle("Decision Tree Training set confusion matrix")+
-  geom_tile(aes(fill = Freq), colour = "white") +
-  xlab("Actual class label")+
-  ylab("Predicted class label")+
-  geom_text(aes(label = sprintf("%1.0f", Freq)), vjust = 1) +
-  scale_fill_gradient(low = "blue",
-                      high = "red",
-                      trans = "log")+
-  theme(legend.text = element_text( size = 15, hjust = 3, vjust = 3, face = 'bold'))
 # given error
 #accuracy <- sum(diag(confMatrix))/sum(confMatrix)
-
 #print(accuracy)
 
 # run the model on test data
 val_predicted <- predict(dtree, test_data, type = "class")
-
-#print(val_predicted)
-
 confMatrix <- as.data.frame(table(test_data$prediction, val_predicted))
 
 ggplot(data =  confMatrix, mapping = aes(x = Var1, y = val_predicted)) +
@@ -138,38 +159,31 @@ ggplot(data =  confMatrix, mapping = aes(x = Var1, y = val_predicted)) +
                       high = "red",
                       trans = "log")
 print(confMatrix)
-
+confMatrix <- (table(test_data$prediction, val_predicted))
 accuracy <- sum(diag(confMatrix))/sum(confMatrix)
-
 print(accuracy)
 
-
+#------------------------------------------------------------------------------------------------
 # Build Naive Bayes Model
-
 model <- naiveBayes(prediction ~ ., data = dataset)
-
 print(model)
 
 # Test model on training data
-
 vals_predicted <- predict(model, newdata = dataset)
-
 confMatrix <- table(dataset$prediction, vals_predicted)
 
 # Prints confusion matrix indicating number of values correctly predicted and not
 
 print(confMatrix)
+#accuracy <- sum(diag(confMatrix))/sum(confMatrix)
+#print(accuracy)
 
-accuracy <- sum(diag(confMatrix))/sum(confMatrix)
 
-print(accuracy)
 
 # Test model on test data
-
 vals_predicted <- predict(model, newdata = test_data)
-
 confMatrix <- as.data.frame(table(test_data$prediction, vals_predicted))
-confMatrix
+
 ggplot(data =  confMatrix, mapping = aes(x = Var1, y = vals_predicted)) +
   ggtitle("Naive Bayes Testing set confusion matrix")+
   geom_tile(aes(fill = Freq), colour = "white") +
@@ -179,50 +193,26 @@ ggplot(data =  confMatrix, mapping = aes(x = Var1, y = vals_predicted)) +
   scale_fill_gradient(low = "blue",
                       high = "red",
                       trans = "log")
+
 # Prints confusion matrix indicating number of values correctly predicted and not
-
-print(confMatrix)
-
+confMatrix <- (table(test_data$prediction, vals_predicted))
 accuracy <- sum(diag(confMatrix))/sum(confMatrix)
-
 print(accuracy)
 
-
-# random Forest
+#-----------------------------------------------------------------------------------------------
+# Build a Random Forrest
 dtree <- randomForest(prediction ~ ., data = dataset)
-
-
 val_predicted <- predict(dtree, dataset, type = 'response')
+confMatrix <- (table(dataset$prediction, val_predicted))
 
-#print(val_predicted)
-
-confMatrix <- as.data.frame(table(dataset$prediction, val_predicted))
-
-print(confMatrix)
-names(confMatrix)
-ggplot(data =  confMatrix, mapping = aes(x = Var1, y = val_predicted)) +
-  geom_tile(aes(fill = Freq), colour = "white") +
-  geom_text(aes(label = sprintf("%1.0f", Freq)), vjust = 1) +
-  scale_fill_gradient(low = "blue",
-                      high = "red",
-                      trans = "log")
 # Plots error rate with respect to increase in number of trees generated
-plot(dtree)
-
-accuracy <- sum(diag(confMatrix))/sum(confMatrix)
-
-print(accuracy)
+#plot(dtree,main="Random Forrest error rate")
+#accuracy <- sum(diag(confMatrix))/sum(confMatrix)
+#print(accuracy)
 
 # On testing data
-levels(test_data$workclass)<-levels(dataset$workclass)
-levels(test_data$occupation)<-levels(dataset$occupation)
 val_predicted <- predict(dtree, test_data, type = 'response')
-
-#print(val_predicted)
-
 confMatrix <- as.data.frame(table(test_data$prediction, val_predicted))
-
-print(confMatrix)
 ggplot(data =  confMatrix, mapping = aes(x = Var1, y = val_predicted)) +
   ggtitle("Random Forrest Testing set confusion matrix")+
   geom_tile(aes(fill = Freq), colour = "white") +
@@ -233,7 +223,8 @@ ggplot(data =  confMatrix, mapping = aes(x = Var1, y = val_predicted)) +
                       high = "red",
                       trans = "log")
 # Plots error rate with respect to increase in number of trees generated
-plot(dtree)
-
+plot(dtree,main="Random Forrest error rate")
+confMatrix <- (table(test_data$prediction, val_predicted))
 accuracy <- sum(diag(confMatrix))/sum(confMatrix)
+print(accuracy)
 
