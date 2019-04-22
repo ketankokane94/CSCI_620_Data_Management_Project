@@ -8,4 +8,8 @@ dataset = subset(dataset, select = -c(fnlwgt,race,native.country) )
 dim(dataset)
 summary(dataset)
 
+#dataset <- na.omit(dataset)
+#dim(dataset)
+class(dataset)
+colnames(dataset)
 
