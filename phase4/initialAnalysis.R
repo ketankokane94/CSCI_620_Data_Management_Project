@@ -23,7 +23,7 @@ colnames(dataset)
 # Dimensions of the raw data
 dim(dataset)
 
-
+head(dataset, n = 10)
 # Attach the database to the R search path
 attach(dataset)
 
@@ -121,3 +121,6 @@ countries[which.max(countries)]
 
 # Display plot of feature "prediction"
 plot(prediction)
+
+plot(as.integer(workclass)~as.integer(occupation))
+levels(workclass)
